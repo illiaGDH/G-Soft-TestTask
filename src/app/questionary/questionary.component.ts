@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, Validators, EmailValidator } from '@angular/forms';
 
 import { Framework } from './models/framework.model';
-
+import { EmailService } from '../services/email.service';
+import { EmailValidatorAsync } from './validation/email.validatorAsync';
 
 @Component({
   selector: 'app-questionary',
@@ -20,54 +21,106 @@ export class QuestionaryComponent implements OnInit {
 
   choosedFramework! : Framework;
 
-  constructor(private fb: FormBuilder) { 
+  constructor (
+    private formBuilder: FormBuilder, 
+    private emailService: EmailService, 
+    private emailValidatorAsync : EmailValidatorAsync
+  ) 
+  { 
     
   }
 
   ngOnInit(): void {
-    this.form = this.fb.group(
+    this.form = this.formBuilder.group(
       {
-        name: '' ,
-        surname: '',
-        dateOfBirth: '',
-        framework: '',
-        frameworkVersion: '',
-        email: '',
-        hobby: this.fb.array([])
+        name: ['', [
+          Validators.required
+        ]] ,
+        surname: ['', [
+          Validators.required
+        ]],
+        dateOfBirth: ['', [
+          Validators.required
+        ]],
+        framework: ['', [
+          Validators.required
+        ]],
+        frameworkVersion: ['', [
+          Validators.required
+        ]],
+        email: ['', [
+          Validators.required,
+          Validators.email,
+        ], 
+        this.emailValidatorAsync.validate.bind(this.emailValidatorAsync)],
+        hobby: this.formBuilder.array([])
       }
     );
-
-    this.form.valueChanges.subscribe((value) => {
-      console.clear();
-      console.log(value);
-    });
    
     this.form.controls['framework'].valueChanges.subscribe(
       frameworkName => this.chooseFramework(frameworkName)
     );
 
-    console.log(this.form.controls['hobby'].value[0]);
     this.newHobby();
   }
 
-  chooseFramework(name: string) {
-    this.choosedFramework = this.frameworks.find(f => f.name == name) as Framework;
+  get name() {
+    return this.form.get('name') as FormGroup;
+  }
+
+  get surname() {
+    return this.form.get('surname') as FormGroup;
+  }
+
+  get dateOfBirth() {
+    return this.form.get('dateOfBirth') as FormGroup;
+  }
+
+  get framework() {
+    return this.form.get('framework') as FormGroup;
+  }
+
+  get frameworkVersion() {
+    return this.form.get('frameworkVersion') as FormGroup;
+  }
+
+  get email() {
+    return this.form.get('email') as FormGroup;
   }
 
   get hobbies() {
     return this.form.get('hobby') as FormArray;
   }
 
+  chooseFramework(name: string) {
+    this.choosedFramework = this.frameworks.find(f => f.name == name) as Framework;
+  }
+
   newHobby() {
-    const hobby = this.fb.group({
-      name: '',
-      duration: ''
+    const hobby = this.formBuilder.group({
+      name: ['', [
+        Validators.required
+      ]],
+      duration: ['', [
+        Validators.required
+      ]]
     });
 
     this.hobbies.push(hobby);
+    console.log(this.hobbies.controls[0].get('name')?.invalid);
+    
   }
 
   deleteHobby(i: number) {
     this.hobbies.removeAt(i);
   }
+
+  reset() {
+    for(let i = this.hobbies.length; i > 0; i--) {
+      this.hobbies.removeAt(i);
+    }
+
+    this.form.reset();
+  }
+
 }

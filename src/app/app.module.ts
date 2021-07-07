@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './common/header/header.component';
 import { QuestionaryComponent } from './questionary/questionary.component';
+import { EmailService } from './services/email.service';
 
 
 
@@ -37,7 +38,7 @@ import { QuestionaryComponent } from './questionary/questionary.component';
     MatNativeDateModule,
     MatIconModule
   ],
-  providers: [MatDatepickerModule],
+  providers: [MatDatepickerModule, EmailService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
