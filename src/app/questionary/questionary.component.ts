@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray, Validators, EmailValidator } from '@angular/forms';
-
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { Framework } from './models/framework.model';
-import { EmailService } from '../services/email.service';
 import { EmailValidatorAsync } from './validation/email.validatorAsync';
+import { SuccessNotifyService } from '../services/success-notify.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-questionary',
   templateUrl: './questionary.component.html',
-  styleUrls: ['./questionary.component.scss']
+  styleUrls: ['./questionary.component.scss'],
+  providers: [
+
+  ]
 })
 export class QuestionaryComponent implements OnInit {
 
@@ -21,16 +24,20 @@ export class QuestionaryComponent implements OnInit {
 
   choosedFramework! : Framework;
 
+  success!: boolean;
+  subscription!: Subscription
+
   constructor (
     private formBuilder: FormBuilder, 
-    private emailService: EmailService, 
-    private emailValidatorAsync : EmailValidatorAsync
+    private emailValidatorAsync : EmailValidatorAsync,
+    private successNotifyServie : SuccessNotifyService
   ) 
   { 
-    
   }
 
   ngOnInit(): void {
+    this.subscription = this.successNotifyServie.currentSuccess.subscribe(status => this.success = status);
+
     this.form = this.formBuilder.group(
       {
         name: ['', [
@@ -56,7 +63,7 @@ export class QuestionaryComponent implements OnInit {
         hobby: this.formBuilder.array([])
       }
     );
-   
+
     this.form.controls['framework'].valueChanges.subscribe(
       frameworkName => this.chooseFramework(frameworkName)
     );
@@ -106,9 +113,7 @@ export class QuestionaryComponent implements OnInit {
       ]]
     });
 
-    this.hobbies.push(hobby);
-    console.log(this.hobbies.controls[0].get('name')?.invalid);
-    
+    this.hobbies.push(hobby);    
   }
 
   deleteHobby(i: number) {
@@ -121,6 +126,10 @@ export class QuestionaryComponent implements OnInit {
     }
 
     this.form.reset();
+  }
+
+  submitHandler() {
+    this.successNotifyServie.changeStatus(true);
   }
 
 }

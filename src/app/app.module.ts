@@ -15,9 +15,7 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './common/header/header.component';
 import { QuestionaryComponent } from './questionary/questionary.component';
 import { EmailService } from './services/email.service';
-
-
-
+import { SuccessNotifyService } from './services/success-notify.service';
 
 @NgModule({
   declarations: [
@@ -36,9 +34,10 @@ import { EmailService } from './services/email.service';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatIconModule
+    MatIconModule,
+    
   ],
-  providers: [MatDatepickerModule, EmailService],
+  providers: [MatDatepickerModule, EmailService, SuccessNotifyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

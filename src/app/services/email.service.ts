@@ -7,7 +7,7 @@ export class EmailService{
   isEmailTaken(email: string): Observable<boolean> {
     const isTaken = email === 'test@test.test' ?  true : false;
 
-    return of(isTaken).pipe(delay(200));
+    return of(isTaken).pipe(delay(2000));
   }
 }
 
