@@ -1,0 +1,49 @@
+.questionary-form {
+  display: flex;
+  flex-direction: column;
+  font-size: 1.3em;
+
+  &__container {
+    min-width: 10em;
+    max-width: 60rem;
+  
+    padding: 15px 20px;
+    margin: 0 auto;
+  
+    background-color: #fff;
+    border-radius: 5px;
+  
+    box-shadow: 0 0.1rem 0.5rem 0.3rem rgba(214, 214, 214, 0.589);
+  }
+
+  &__title {
+    font-weight: 500;
+  }
+
+  &__header, &__footer {
+    margin: 1em 0;
+  }    
+
+  &__footer {
+    display: flex;
+    flex-direction: row;
+    margin-top: 3em;
+  }
+
+  &__button {
+    font-size: 1em;
+    margin-right: 1em;
+  }
+}
+
+
+.hobby {
+  &-input {
+    width: 100%;
+  
+    & mat-form-field {
+      margin-right: 1em;
+    }
+  }
+}
+

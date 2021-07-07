@@ -1,0 +1,70 @@
+<div class="questionary-form__container">
+  <div class="questionary-form__header">
+    <h3 class="questionary-form__title">Let us know who you are</h3>
+  </div>
+
+  <form [formGroup]="form" class="questionary-form">
+
+    <mat-form-field>
+      <input matInput placeholder="Name" formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Surname" formControlName="surname">
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Date of birth</mat-label>
+      <input matInput [matDatepicker]="birthDatePicker" formControlName="dateOfBirth">
+      <mat-datepicker-toggle matSuffix [for]="birthDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #birthDatePicker></mat-datepicker>
+    </mat-form-field>
+
+
+    <mat-form-field>
+      <mat-label>Prefered framework</mat-label>
+      <mat-select formControlName="framework">
+        <mat-option *ngFor="let framework of frameworks" [value]="framework.name">{{ framework.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Version</mat-label>
+      <mat-select formControlName="frameworkVersion" [disabled]="choosedFramework == undefined">
+        <mat-option *ngFor="let version of choosedFramework?.versions" [value]="version">{{ version }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput placeholder="Enter your email here..." formControlName="email">
+    </mat-form-field>
+
+    <h3 class="questionary-form__title">Tell us about your hobbies</h3>
+
+
+    <div class="hobby-inputs" formArrayName="hobby">
+      <div class="hobby-input" *ngFor="let hobby of hobbies.controls; let i = index" [formGroupName]="i">
+       
+        <mat-form-field>
+          <input matInput placeholder="Hobby name" formControlName="name">
+        </mat-form-field>
+       
+        <mat-form-field>
+          <input matInput placeholder="How long you do it" formControlName="duration">
+        </mat-form-field>
+       
+        <button mat-mini-fab color="warn" (click)="deleteHobby(i)" *ngIf="i!=0">
+          <mat-icon>remove</mat-icon>
+        </button>
+      </div>
+    </div>
+    <button mat-mini-fab color="primary" (click)="newHobby()">
+      <mat-icon>add</mat-icon>
+    </button>
+
+    <div class="questionary-form__footer">
+      <button class="questionary-form__button" mat-raised-button color="primary">Submit</button>
+      <button class="questionary-form__button" mat-raised-button color="basic">Clear</button>
+    </div>
+  </form>
+</div>
