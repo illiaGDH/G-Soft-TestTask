@@ -1,4 +1,4 @@
-# GSoftTestTask
+# G-Soft Test Task
 Thank G-Soft for sending me a test task. I've done almost all, exept data formating with Angular material date picker... ((((
 I would like to recieve a little feedback or some comments if it's not a problem.
 
